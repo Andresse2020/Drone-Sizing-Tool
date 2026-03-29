@@ -1,0 +1,42 @@
+{
+  "_metadata": {
+    "description": "Mission input file for the TUNDRA 2 drone sizing.",
+    "project": "HELIOX X1 — Project 5030-A1",
+    "author": "HEXADRONE",
+    "version": "1.1.0",
+    "date": "2026-03-23"
+  },
+
+  "mission": {
+    "name": "TUNDRA_2",
+    "description": "Quadcopter. Baseline sizing configuration with 6S LiPo and target TWR of 1.8."
+  },
+
+  "drone": {
+    "_comments": {
+      "m_struct_kg": "Structural mass: airframe + motors + ESCs + electronics + wiring. Excludes battery and payload.",
+      "m_payload_kg": "Payload mass: inspection sensors, gimbal, cameras. Excludes battery.",
+      "configuration": "Rotor layout. Supported values: 'quad' (4 motors, flat), 'hexa' (6 motors, flat), 'octo' (8 motors, flat), 'x8' (8 motors coaxial, 4 pairs).",
+      "TWR_cible": "Target thrust-to-weight ratio at MTOW. Used to validate motor selection.",
+      "vitesse_kmh": "Nominal cruise speed in km/h. Used to compute optimal propeller pitch for forward flight.",
+      "batterie_S": "Battery cell count (number of cells in series). Effective voltage = S x 3.7V.",
+      "helice_diametre_inch": "Propeller diameter in inches (mandatory, from manufacturer datasheet).",
+      "helice_pas_inch": "Propeller pitch in inches (mandatory, from manufacturer datasheet)."
+    },
+    "m_struct_kg": 4.9,
+    "m_payload_kg": 4.0,
+    "configuration": "quad",
+    "TWR_cible": 1.8,
+    "vitesse_kmh": 45,
+    "batterie_S": 6,
+    "helice_diametre_inch": 28,
+    "helice_pas_inch": 9.2
+  },
+
+  "output": {
+    "_comments": {
+      "format": "Output report format. Supported values: 'html', 'pdf'."
+    },
+    "format": "html"
+  }
+}

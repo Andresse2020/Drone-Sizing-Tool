@@ -1,0 +1,85 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "description": "Physical model configuration for multirotor drone sizing tool.",
+    "last_updated": "2026-03-22",
+    "units": {
+      "mass": "kg",
+      "length": "m",
+      "force": "N",
+      "power": "W",
+      "energy": "Wh",
+      "speed": "m/s",
+      "density": "kg/m3",
+      "diameter": "inches (propeller only)"
+    }
+  },
+
+  "atmosphere": {
+    "_description": "Standard ISA atmospheric conditions at the operating altitude. Density rho is computed from altitude using the ISA model if altitude_m > 0, otherwise the provided rho_kg_m3 value is used directly.",
+    "altitude_m": 0,
+    "rho_kg_m3": 1.225,
+    "g_m_s2": 9.81
+  },
+
+  "propeller_model": {
+    "_description": "Hybrid analytical + corrective coefficient model based on actuator disk theory. CT and CP are non-dimensional thrust and power coefficients calibrated for the target propeller family. Diameter and pitch are supplied from mission inputs (manufacturer datasheet). The pitch_to_diameter_ratio values below are kept for reference only and are no longer used in computation.",
+    "CT": 0.0115,
+    "CP": 0.0055,
+    "_CT_note": "Thrust coefficient. Typical range for multirotor propellers: 0.009 to 0.015.",
+    "_CP_note": "Power coefficient. Typical range for multirotor propellers: 0.004 to 0.007.",
+    "slip_factor": 0.15,
+    "_slip_factor_note": "Propeller slip (ratio of induced velocity loss). Typical range: 0.10 to 0.20.",
+    "pitch_to_diameter_ratio_hover": 0.6,
+    "_pitch_hover_note": "[Reference only — not used in computation] Pitch-to-diameter ratio for hover efficiency. Typical: 0.5 to 0.65.",
+    "pitch_to_diameter_ratio_speed": 0.8,
+    "_pitch_speed_note": "[Reference only — not used in computation] Pitch-to-diameter ratio for forward flight. Typical: 0.7 to 1.0.",
+    "diameter_min_inch": 10,
+    "diameter_max_inch": 34
+  },
+
+  "battery": {
+    "_description": "LiPo battery physical model. The nominal cell voltage is 3.7V per cell. Effective voltage is computed as: V_eff = cell_count_S x 3.7. The depth of discharge (DoD) defines the usable fraction of the total stored energy. Mass fraction bounds constrain the battery sizing optimization.",
+    "energy_density_Wh_kg": 260,
+    "_energy_density_note": "Specific energy of the battery pack in Wh/kg. Typical LiPo range: 150 to 250 Wh/kg.",
+    "cell_voltage_nominal_V": 3.7,
+    "_cell_voltage_note": "Nominal voltage per LiPo cell. Used to compute pack voltage from cell count S.",
+    "depth_of_discharge": 0.8,
+    "_dod_note": "Usable fraction of total battery energy. 0.8 means 80% of stored energy is available. Remaining 20% is kept to preserve battery health.",
+    "mass_fraction_min": 0.15,
+    "_mass_fraction_min_note": "Minimum battery mass as a fraction of (m_struct + m_payload). Below this, the battery is undersized.",
+    "mass_fraction_max": 0.40,
+    "_mass_fraction_max_note": "Maximum battery mass as a fraction of (m_struct + m_payload). Above this, the added weight penalty exceeds the energy benefit."
+  },
+
+  "drivetrain": {
+    "_description": "Drivetrain efficiency model. If eta_global is non-null, it takes priority over the product of individual efficiencies (eta_motor x eta_esc x eta_propeller). Individual values are kept for reference and documentation purposes.",
+    "eta_motor": 0.88,
+    "_eta_motor_note": "Brushless motor efficiency. Typical range: 0.85 to 0.92.",
+    "eta_esc": 0.95,
+    "_eta_esc_note": "Electronic Speed Controller efficiency. Typical range: 0.93 to 0.97.",
+    "eta_propeller": 0.75,
+    "_eta_propeller_note": "Propeller aerodynamic efficiency. Typical range: 0.65 to 0.80.",
+    "eta_global": null,
+    "_eta_global_note": "Override for global drivetrain efficiency. If set to a float (e.g. 0.62), it replaces the product of individual efficiencies. Set to null to use computed value."
+  },
+
+  "coaxial_correction": {
+    "_description": "Thrust loss correction for coaxial rotor configurations (x8 only). In a coaxial pair, the lower rotor operates in the disturbed wake of the upper rotor, resulting in a thrust loss. The effective thrust per motor pair is: T_pair = 2 x T_single x thrust_loss_factor. Not applied for quad, hexa, or octo configurations.",
+    "enabled": true,
+    "thrust_loss_factor": 0.85,
+    "_thrust_loss_note": "Coaxial thrust efficiency factor. Typical range: 0.80 to 0.90. Applied only when enabled is true and configuration is coaxial (x8)."
+  },
+
+  "constraints": {
+    "_description": "Design constraints used to validate the sizing results and trigger warnings in the output report.",
+    "TWR_min": 1.8,
+    "_TWR_min_note": "Minimum acceptable thrust-to-weight ratio. Below this value, the drone cannot safely maneuver or handle wind disturbances.",
+    "TWR_max": 3.0,
+    "_TWR_max_note": "Maximum acceptable TWR. Above this, the drone is oversized and likely too heavy or inefficient.",
+    "battery_mass_kg_max": 5.0,
+    "_battery_mass_note": "Hard upper limit on battery mass in kg. Driven by structural and payload constraints.",
+    "propeller_diameter_max_inch": 32,
+    "_propeller_diameter_note": "Maximum propeller diameter in inches. Driven by airframe geometry and ground clearance."
+  }
+}
