@@ -87,7 +87,7 @@ python drone_sizing.py <inputs_file> [--output-dir <dir>]
 | Argument | Required | Description |
 |---|---|---|
 | `inputs_file` | **Yes** | Path to your mission JSON file. |
-| `--output-dir DIR` | No | Directory where the report will be written. Defaults to the current directory (`.`) if not specified. |
+| `--output-dir DIR` | No | Directory where the report will be written. <br> Defaults to the current directory (`.`) if not specified. |
 
 **Examples:**
 
@@ -150,7 +150,7 @@ Create a `.json` file in the `inputs/` folder. Use one of the provided examples 
 
 | Field | Type | Description |
 |---|---|---|
-| `m_struct_kg` | float | Structural mass (airframe, motors, ESCs, electronics). **Excludes** battery and payload. |
+| `m_struct_kg` | float | Structural mass (airframe, motors, ESCs, electronics). <br> **Excludes** battery and payload. |
 | `m_payload_kg` | float | Payload mass (sensors, gimbal, cameras). **Excludes** battery. |
 | `configuration` | string | Rotor layout: `"quad"`, `"hexa"`, `"octo"`, or `"x8"` (coaxial). |
 | `TWR_cible` | float | Target thrust-to-weight ratio at MTOW. Typical: `1.8` to `2.5`. |
